@@ -1,0 +1,29 @@
+
+util.require_natives("3095a", "g")
+util.require_natives("natives-1663599433")
+native_invoker.accept_bools_as_ints(true)
+function first_to_upper(str)
+    return (str:gsub("^%l", string.upper))
+end
+
+local ROOT = menu.my_root()
+local ONLINE_ROOT = ROOT:list('Anti MK2 Rockets')
+
+ONLINE_ROOT:toggle_loop('Removes Rockets from Oppressor MKII', {}, 'Removes MKII rockets ', function()
+    for entities.get_all_vehicles_as_pointers() as veh do
+        local mdl = entities.get_model_hash(veh)
+
+        if mdl == util.joaat('oppressor2') then 
+            local hdl = entities.pointer_to_handle(veh)
+            local ped = GET_PED_IN_VEHICLE_SEAT(hdl, -1)
+
+            if GET_VEHICLE_MOD(hdl, 10) ~= -1 then
+                if entities.request_control(hdl) then
+                    SET_VEHICLE_MOD(hdl, 10, -1)
+                else
+                    util.toast("if you see this notification, that means you didnt get control of the vehicle")
+                end
+            end
+        end
+    end
+end) 
